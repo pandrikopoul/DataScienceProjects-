@@ -1,0 +1,125 @@
+#Statistics
+
+#Total number of triples :
+
+PREFIX ns1:<http://example.org/moto-sports/motoGP/>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+
+SELECT  (COUNT( ?s) AS ?class)
+WHERE
+{ 
+  ?o ?p ?s .   
+}
+
+
+#Number of Distinct resources created by us:
+
+PREFIX ex: <http://example.org/>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+SELECT ( ?sub + ?obj AS ?sum)
+WHERE {
+{
+  SELECT   (COUNT(distinct ?subject) AS ?sub)
+WHERE {
+  ?subject ?predicate ?object .
+  FILTER(STRSTARTS(STR(?subject), STR("http://example.org/motor-sports")))
+
+}
+  
+}  
+{
+  SELECT  (COUNT(distinct ?object) AS ?obj)
+WHERE {
+  ?subject ?predicate ?object .
+  FILTER(STRSTARTS(STR(?object), STR("http://example.org/motor-sports")))
+
+}
+  
+}   
+  
+}
+
+
+#Total Number of properties created by us :
+
+PREFIX ex: <http://example.org/>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+  SELECT   (COUNT(distinct ?predicate) AS ?sub)
+WHERE {
+  ?subject ?predicate ?object .
+  FILTER(STRSTARTS(STR(?predicate), STR("http://example.org/motor-sports")))
+
+}
+  
+
+#Total Number of owl axioms :
+
+
+PREFIX ex: <http://example.org/>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+
+SELECT ( ?owlpre + ?owlobj AS ?sum) 
+WHERE {
+  {
+    SELECT (COUNT( ?predicate) AS ?owlpre) 
+    where {                                      
+    ?subject ?predicate ?object .
+  FILTER(STRSTARTS(STR(?predicate),STR(owl:)))
+      }
+    
+}
+    {
+    SELECT (COUNT( ?object) AS ?owlobj) 
+    where {                                      
+    ?subject ?predicate ?object .
+  FILTER(STRSTARTS(STR(?object),STR(owl:)))
+      }
+      
+      
+}
+}
+
+
+#Total number of rdfs axioms :
+
+PREFIX ex: <http://example.org/>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+SELECT (COUNT(?predicate) AS ?owlpre)
+WHERE {
+  ?subject ?predicate ?object .
+  FILTER(STRSTARTS(STR(?predicate), STR(rdfs:)))
+
+}
+
+
+#MotoGP constructors triples after modeling temporal data:
+
+  PREFIX ns1: <http://example.org/motor-sports/motoGP/>
+
+  SELECT  (COUNT(?o) As ?x)
+  WHERE{
+  ?o a ns1:MotoGPConstructor.
+}
+
+
+#Total number of Classes
+  PREFIX ns1: <http://example.org/motor-sports/motoGP/>
+
+  SELECT  (COUNT(DISTINCT ?c) AS ?class)
+  WHERE{
+  ?o a ?c.
+}
+
+
+
